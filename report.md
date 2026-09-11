@@ -17,7 +17,8 @@
 - Student information displayed in the app
 
 ### Screenshot
-![Counter App Screenshot](screenshot.png)
+
+<img width="953" height="441" alt="image" src="https://github.com/user-attachments/assets/0855eb1a-b7f2-4488-bb25-0af10b00d404" />
 
 ### Reflection
 `setState()` is used when a value in the app changes and the screen needs to show the updated value. For example, when I increase or reset the counter, `setState()` tells Flutter to rebuild the widget with the new data. Without it, the variable may change internally, but the updated value would not appear on the screen.
