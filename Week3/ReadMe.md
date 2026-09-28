@@ -15,3 +15,7 @@
 
 ## PART 6
 <img width="278" height="73" alt="image" src="https://github.com/user-attachments/assets/58afa5dc-807e-4746-bb33-7b7b1d061eab" />
+
+## Bonus
+<img width="531" height="158" alt="image" src="https://github.com/user-attachments/assets/9e0326c2-0920-41ae-884f-ed1b05f79eef" />
+
