@@ -81,9 +81,7 @@ int sumDigits(int n) => n < 10 ? n : (n % 10) + sumDigits(n ~/ 10);
 
 // PART 3
 Map<String, int> buildStock() {
-  return {
-   for (var b in books) b['title'] as String: b['copies'] as int
-   };
+  return {for (var b in books) b['title'] as String: b['copies'] as int};
 }
 
 // PART 4
@@ -94,7 +92,8 @@ class Box<T> {
 }
 
 // 4.2: A generic function
-T firstOr<T>(List<T> items, T fallback) => items.isNotEmpty ? items.first : fallback;
+T firstOr<T>(List<T> items, T fallback) =>
+    items.isNotEmpty ? items.first : fallback;
 
 // 4.3: A class with two type parameters
 class Pair<A, B> {
@@ -135,7 +134,8 @@ void checkOut(Map<String, int> stock, String title) {
 }
 
 // 5.4: A built-in exception
-Map<String, dynamic> findBook(String title) => books.firstWhere((book) => book['title'] == title);
+Map<String, dynamic> findBook(String title) =>
+    books.firstWhere((book) => book['title'] == title);
 
 // PART 6
 // 6.1: Await a Future
@@ -156,6 +156,51 @@ Future<String> fetchBroken() async {
   throw Exception('Server down');
 }
 
+// B1
+Map<String, List<String>> groupBooksByTag() {
+  Map<String, List<String>> result = {};
+
+  for (var book in books) {
+    String title = book['title'];
+    List<String> tags = List<String>.from(book['tags']);
+
+    for (var tag in tags) {
+      if (!result.containsKey(tag)) {
+        result[tag] = [];
+      }
+
+      result[tag]!.add(title);
+    }
+  }
+
+  return result;
+}
+
+// B2
+List<T> filterBy<T>(List<T> items, bool Function(T) test) {
+  List<T> result = [];
+
+  for (var item in items) {
+    if (test(item)) {
+      result.add(item);
+    }
+  }
+
+  return result;
+}
+
+// B3
+Future<void> bonusFuture() async {
+  var stopwatch = Stopwatch()..start();
+
+  var results = await Future.wait([fetchBookOfTheDay(), fetchBookOfTheDay()]);
+
+  stopwatch.stop();
+
+  print(results);
+  print('Time: ${stopwatch.elapsedMilliseconds} ms');
+}
+
 // Main
 
 void main() async {
@@ -165,6 +210,7 @@ void main() async {
   part4();
   part5();
   await part6();
+  await bonus();
 }
 
 void part1() {
@@ -203,14 +249,17 @@ void part2() {
   print(desk1());
   print(desk1());
   print(desk2());
+  //desk2() prints 1 because it has its own separate variable calling desk1() three times does not affect desk2().
 
   var studentFee = makeFeeCalculator(0.25);
   var staffFee = makeFeeCalculator(0.10);
 
   print('Student fee: ${studentFee(4)}');
+
   print('Staff fee: ${staffFee(4)}');
 
   print('Sum of digits: ${sumDigits(314)}');
+  //if the base case is removed from sumDigits the function will keep calling itself forever.
 }
 
 void part3() {
@@ -277,6 +326,7 @@ void part4() {
   print('Box<String>: ${strBox.value}');
 
   // intBox.value = 'hello';
+  // because intBox is of type int assigning a string to an int will give compile time error.
 
   print(firstOr(['Dart in Action', 'Clean Code'], 'none'));
   print(firstOr<String>([], 'z'));
@@ -322,11 +372,32 @@ Future<void> part6() async {
   var result = await fetchBookOfTheDay();
   print('Book of the day: $result');
 
+  //var result = fetchBookOfTheDay();
+  //print(result);
+
   try {
     await fetchBroken();
   } catch (e) {
     print('Fetch failed: $e');
   }
+}
+
+Future<void> bonus() async {
+  print('\n--- Bonus ---');
+
+  var grouped = groupBooksByTag();
+
+  grouped.forEach((tag, titles) {
+    print('$tag: $titles');
+  });
+
+  var availableBooks = filterBy(books, (book) => book['copies'] > 0);
+
+  var availableTitles = availableBooks.map((book) => book['title']).toList();
+
+  print('Available using filterBy: $availableTitles');
+
+  await bonusFuture();
 }
 
 /*
@@ -344,7 +415,6 @@ BookNotAvailableException should be handled first so it gets its required
 message. A general catch can catch many errors and may otherwise handle it
 before the specific logic is reached.
 
-4. write an easy answer to question 4
-It compiles because Dart allows a Future to be returned but if we forget await
-the program does not wait for the real value and gets the Future object.
+4. Forgeeting await still compiles 
+It compiles because Dart allows a Future to be returned but if we forget await the program does not wait for the real value and gets the Future object.
 */
