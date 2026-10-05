@@ -346,3 +346,15 @@ void step10() {
     'payable ${receiptAmount - discount}',
   );
 }
+
+/*
+ Reflection Answers
+
+1.The shorthand saves us from writing this.name = name and this.type = type separately it makes the constructor shorter.
+
+2.We use a named constructor when we want another way to create an object and use a factory constructor when we may return an old object instead of creating a new one.
+
+3.An initializer list sets the value before the constructor body runs the constructor body will run after that.
+
+4.Getters and setters are used to control access to the data of a class getter is used to read or calculate a value and a setter is used to check or control a value before changing it.
+*/
