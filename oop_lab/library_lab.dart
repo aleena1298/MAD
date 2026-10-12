@@ -34,16 +34,26 @@ final int shelfSize = 3 + u % 4; // items on the shelf in Steps 9-10
 // Step 1
 // 1.1
 abstract class LibraryItem {
+  // 9.1
+  static int created = 0;
   final String title;
   final int year;
 
-  LibraryItem(this.title, this.year);
+  // 9.1
+  LibraryItem(this.title, this.year) {
+    created++;
+  }
 
   // 2.1
   String describe() => '$title ($year)';
 
   // 3.1
   int lateFee(int days);
+
+  // 9.1
+  static int capFee(int fee) {
+    return fee > feeCap ? feeCap : fee;
+  }
 }
 
 // 1.2
@@ -204,6 +214,19 @@ class Fine {
 
   @override
   String toString() => 'Fine($amount)';
+}
+
+// 9.1
+List<LibraryItem> buildShelf() {
+  return [
+    for (int k = 0; k < shelfSize; k++)
+      if (k % 3 == 0)
+        Book(titles[(u + k) % 10], yearOf((u + k) % 10), 100 + 3 * seed)
+      else if (k % 3 == 1)
+        Magazine(titles[(u + k) % 10], yearOf((u + k) % 10), 1 + (t + k) % 12)
+      else
+        Dvd(titles[(u + k) % 10], yearOf((u + k) % 10), 90 + seed % 40),
+  ];
 }
 
 void main() {
@@ -370,6 +393,31 @@ void step8() {
 
 void step9() {
   print('--- Step 9 ---');
+  LibraryItem.created = 0;
+
+  buildShelf();
+
+  var shelf = buildShelf();
+
+  print('Step 9: items created = ${LibraryItem.created}');
+
+  print(
+    'Step 9: capped fee = '
+    '${LibraryItem.capFee(shelf.first.lateFee(daysBig))} '
+    '(cap $feeCap)',
+  );
+
+  print(
+    'Step 9: const copies identical? '
+    '${identical(const Fine(10), const Fine(10))}',
+  );
+
+  print(
+    'Step 9: new copies identical? '
+    '${identical(Fine(10), Fine(10))}',
+  );
+
+  // created is static, so it belongs to LibraryItem itself rather than to one LibraryItem object
 }
 
 void step10() {
