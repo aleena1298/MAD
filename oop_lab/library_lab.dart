@@ -159,6 +159,27 @@ enum MemberType {
   }
 }
 
+// 7.1
+extension MoneyText on int {
+  String get rs => 'Rs $this'; // 72.rs -> 'Rs 72'
+}
+
+extension Initials on String {
+  String get initials => split(' ')
+      .map((word) => word[0])
+      .join(); // 'Computer Networks'.initials -> 'CN'
+}
+
+extension ShelfMath on List<LibraryItem> {
+  int totalLateFee(int days) {
+    return fold(
+      0,
+      (sum, item) =>
+          sum + item.lateFee(days), // sum of lateFee(days) over the list
+    );
+  }
+}
+
 void main() {
   print('Seed: $seed (t=$t, u=$u)');
   step1();
@@ -281,6 +302,24 @@ void step6() {
 
 void step7() {
   print('--- Step 7 ---');
+  var type = MemberType.values[seed % 3];
+
+  int fee = mainBook().lateFee(daysLate);
+
+  int discountedFee = type.applyDiscount(fee);
+
+  List<LibraryItem> shelf = [mainBook(), mainMagazine(), mainDvd()];
+
+  print('Step 7: ${discountedFee.rs}');
+
+  print('Step 7: initials of "${titles[u]}" = ${titles[u].initials}');
+
+  print(
+    'Step 7: shelf fee for $daysLate days = '
+    '${shelf.totalLateFee(daysLate).rs}',
+  );
+
+  // Extensions make code easier to read, such as 72.rs instead of calling a separate function like rs(72)
 }
 
 void step8() {
