@@ -33,30 +33,101 @@ final int shelfSize = 3 + u % 4; // items on the shelf in Steps 9-10
 
 // Step 1
 // 1.1
-class LibraryItem {
+abstract class LibraryItem {
   final String title;
   final int year;
 
   LibraryItem(this.title, this.year);
+
+  // 2.1
+  String describe() => '$title ($year)';
+
+  // 3.1
+  int lateFee(int days);
 }
 
 // 1.2
-class Book extends LibraryItem {
+class Book extends LibraryItem implements Borrowable {
   final int pages;
+  bool _out = false;
 
   Book(super.title, super.year, this.pages);
+
+  // 2.2
+  @override
+  String describe() => '${super.describe()}, $pages pages';
+
+  // 3.2
+  @override
+  int lateFee(int days) => days * feePerDay;
+
+  // 4.2
+  @override
+  bool get isAvailable => !_out;
+
+  @override
+  void borrow() {
+    _out = true;
+  }
+
+  @override
+  void giveBack() {
+    _out = false;
+  }
 }
 
 // 1.3
 Book mainBook() {
-  return Book(
-    titles[u],
-    yearOf(u),
-    100 + 3 * seed,
-  );
+  return Book(titles[u], yearOf(u), 100 + 3 * seed);
 }
 
+// 2.3
+class Magazine extends LibraryItem {
+  final int issue;
 
+  Magazine(super.title, super.year, this.issue);
+
+  @override
+  String describe() => '${super.describe()}, issue $issue';
+
+  // 3.2
+  @override
+  int lateFee(int days) => days * (feePerDay ~/ 2);
+}
+
+Magazine mainMagazine() {
+  int i = (u + 1) % 10;
+
+  return Magazine(titles[i], yearOf(i), 1 + (t + u) % 12);
+}
+
+// 3.2
+class Dvd extends LibraryItem {
+  final int minutes;
+
+  Dvd(super.title, super.year, this.minutes);
+
+  @override
+  String describe() => '${super.describe()}, $minutes min';
+
+  @override
+  int lateFee(int days) => days * feePerDay * 2;
+}
+
+Dvd mainDvd() {
+  int i = (u + 2) % 10;
+
+  return Dvd(titles[i], yearOf(i), 90 + seed % 40);
+}
+
+// 4.1
+abstract class Borrowable {
+  bool get isAvailable;
+
+  void borrow();
+
+  void giveBack();
+}
 
 void main() {
   print('Seed: $seed (t=$t, u=$u)');
@@ -88,14 +159,49 @@ void step1() {
 
 void step2() {
   print('--- Step 2 ---');
+  print('Step 2: ${mainBook().describe()}');
+  print('Step 2: ${mainMagazine().describe()}');
+
+  // If @override is forgotten and describe is misspelled as descibe() Dart treats it as a new method instead of replacing describe()
 }
 
 void step3() {
   print('--- Step 3 ---');
+  var book = mainBook();
+  var magazine = mainMagazine();
+  var dvd = mainDvd();
+
+  print('Step 3: Book late fee for $daysLate days = ${book.lateFee(daysLate)}');
+
+  print(
+    'Step 3: Magazine late fee for $daysLate days = ${magazine.lateFee(daysLate)}',
+  );
+
+  print('Step 3: Dvd late fee for $daysLate days = ${dvd.lateFee(daysLate)}');
+
+  // LibraryItem cannot be created directly because it is abstract.
 }
 
 void step4() {
   print('--- Step 4 ---');
+  var book = mainBook();
+
+  print('Step 4: available? ${book.isAvailable}');
+
+  book.borrow();
+  print('Step 4: after borrow? ${book.isAvailable}');
+
+  book.giveBack();
+  print('Step 4: after return? ${book.isAvailable}');
+
+  List<LibraryItem> items = [book, mainMagazine(), mainDvd()];
+
+  for (var item in items) {
+    print('Step 4: ${item.runtimeType} borrowable? ${item is Borrowable}');
+  }
+
+  // Borrowable only defines a contract here, so Book writes the methods itself.
+  // Book also already extends LibraryItem, and Dart allows only one parent class.
 }
 
 void step5() {
