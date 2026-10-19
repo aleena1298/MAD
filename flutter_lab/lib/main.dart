@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 
 const String studentName = 'Aleena Tariq';
-const String rollNo = '040723131016'; // e.g. '21F-0347'
+const String rollNo = '04072313016'; // e.g. '21F-0347'
 
 // ===== Seeded settings (generated from YOUR roll number). Do not edit. =====
 final int seed = int.parse(rollNo.substring(rollNo.length - 2));
@@ -38,6 +38,7 @@ final List<String> lifecycleLog = <String>[];
 void main() => runApp(const LabApp());
 
 // Keep the name LabApp and its const constructor: the checker uses them.
+// 1.1
 class LabApp extends StatelessWidget {
   const LabApp({super.key});
 
@@ -45,12 +46,30 @@ class LabApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Step 1 replaces everything below.
     return MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Setup OK: seed $seed (t=$t, u=$u)')),
+     title: 'Study Tracker',
+     home: HomePage(),
+    );
+  }
+}
+
+// 1.2
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Study Tracker: $course'),
+      ),
+      body: const Center(
+        child: Text('Hello'),
       ),
     );
   }
 }
+// runApp receives the root widget of the whole app
+// MaterialApp home receives the first screen that should be displayed
 
 // ---- Provided for Step 7. It has a bug on purpose. Do not rename anything.
 class BuggyCounter extends StatefulWidget {
