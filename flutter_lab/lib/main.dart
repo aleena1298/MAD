@@ -39,6 +39,8 @@ void main() => runApp(const LabApp());
 
 // Keep the name LabApp and its const constructor: the checker uses them.
 // 1.1
+// Stateless
+// the root app has no changing data
 class LabApp extends StatelessWidget {
   const LabApp({super.key});
 
@@ -50,6 +52,8 @@ class LabApp extends StatelessWidget {
 }
 
 // 1.2
+// Stateless
+//the page layout does not store changing data
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -99,6 +103,8 @@ class HomePage extends StatelessWidget {
 // MaterialApp home receives the first screen that should be displayed
 
 // 2.1
+// Stateless
+//it only displays the student information given to it
 class StudentCard extends StatelessWidget {
   final String name;
   final String roll;
@@ -134,6 +140,8 @@ class StudentCard extends StatelessWidget {
 // without final Dart reports that a StatelessWidget has a non-final instance field
 
 // step 4
+// Stateless
+//it calculates and displays values given to it
 class GoalBanner extends StatelessWidget {
   // 4.1
   final int count;
@@ -156,6 +164,8 @@ class GoalBanner extends StatelessWidget {
 // To show a new count, its parent must rebuild and pass a new count value.
 
 // 5.1
+// Stateful
+//its count changes when the buttons are pressed.
 class Tally extends StatefulWidget {
   const Tally({super.key});
 
@@ -239,6 +249,8 @@ class _TallyState extends State<Tally> {
 // _TallyState stores the changing count so the State can survive rebuilds
 
 // ---- Provided for Step 7. It has a bug on purpose. Do not rename anything.
+// Stateful
+//its click value changes when the button is pressed.
 class BuggyCounter extends StatefulWidget {
   const BuggyCounter({super.key});
 
@@ -272,6 +284,8 @@ class _BuggyCounterState extends State<BuggyCounter> {
 // but the screen still showed 0 because build() was not called again
 
 // step 8
+// Stateful
+//the remaining seconds change every second.
 class Countdown extends StatefulWidget {
   const Countdown({super.key});
 
