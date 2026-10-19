@@ -76,6 +76,8 @@ class HomePage extends StatelessWidget {
                 Text('Max: $maxCount', key: const Key('info-max')),
               ],
             ),
+            
+            const Tally(),
             // 4.3
             const SizedBox(height: 12),
 
@@ -83,7 +85,7 @@ class HomePage extends StatelessWidget {
 
             // 5.3
             const SizedBox(height: 12),
-            const Tally(),
+            const BuggyCounter(),
           ],
         ),
       ),
@@ -191,6 +193,8 @@ class _TallyState extends State<Tally> {
     });
   }
 
+  // Hot reload keeps the existing State
+  // Hot restart creates the app and State again
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -253,7 +257,9 @@ class _BuggyCounterState extends State<BuggyCounter> {
         ElevatedButton(
           key: const Key('bug-button'),
           onPressed: () {
-            _clicks += bugStep;
+            setState(() {
+              _clicks += bugStep;
+            });
           },
           child: Text('+$bugStep'),
         ),
@@ -261,3 +267,6 @@ class _BuggyCounterState extends State<BuggyCounter> {
     );
   }
 }
+// Before fix after three taps _clicks was 9
+// but the screen still showed 0 because build() was not called again
+
