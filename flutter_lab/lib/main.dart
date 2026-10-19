@@ -80,6 +80,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
 
             GoalBanner(count: startCount, max: maxCount),
+
+            // 5.3
+            const SizedBox(height: 12),
+            const Tally(),
           ],
         ),
       ),
@@ -147,6 +151,50 @@ class GoalBanner extends StatelessWidget {
 }
 // GoalBanner does not need setState because it only displays the values that are given to it
 // To show a new count, its parent must rebuild and pass a new count value.
+
+// 5.1
+class Tally extends StatefulWidget {
+  const Tally({super.key});
+
+  @override
+  State<Tally> createState() => _TallyState();
+}
+
+// 5.2
+class _TallyState extends State<Tally> {
+  int _count = startCount;
+
+  // 5.3
+  void _plus() {
+    setState(() {
+      _count += stepSize;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Count: $_count', key: const Key('count')),
+
+        GoalBanner(count: _count, max: maxCount),
+
+        Row(
+          children: [
+            ElevatedButton(
+              key: const Key('plus'),
+              onPressed: _plus,
+              child: Text('+$stepSize'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+// Tally represents the widget configuration
+// _TallyState stores the changing count so the State can survive rebuilds
 
 // ---- Provided for Step 7. It has a bug on purpose. Do not rename anything.
 class BuggyCounter extends StatefulWidget {
