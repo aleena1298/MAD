@@ -79,7 +79,7 @@ class HomePage extends StatelessWidget {
             // 4.3
             const SizedBox(height: 12),
 
-            GoalBanner(count: startCount, max: maxCount),
+            //GoalBanner(count: startCount, max: maxCount),
 
             // 5.3
             const SizedBox(height: 12),
@@ -160,14 +160,34 @@ class Tally extends StatefulWidget {
   State<Tally> createState() => _TallyState();
 }
 
-// 5.2
 class _TallyState extends State<Tally> {
   int _count = startCount;
 
-  // 5.3
+  // 6.1
   void _plus() {
     setState(() {
       _count += stepSize;
+
+      if (_count > maxCount) {
+        _count = maxCount;
+      }
+    });
+  }
+
+  // 6.2
+  void _minus() {
+    setState(() {
+      _count -= stepSize;
+
+      if (_count < 0) {
+        _count = 0;
+      }
+    });
+  }
+
+  void _reset() {
+    setState(() {
+      _count = startCount;
     });
   }
 
@@ -187,12 +207,29 @@ class _TallyState extends State<Tally> {
               onPressed: _plus,
               child: Text('+$stepSize'),
             ),
+
+            const SizedBox(width: 8),
+
+            ElevatedButton(
+              key: const Key('minus'),
+              onPressed: _minus,
+              child: Text('-$stepSize'),
+            ),
+
+            const SizedBox(width: 8),
+
+            OutlinedButton(
+              key: const Key('reset'),
+              onPressed: _reset,
+              child: const Text('Reset'),
+            ),
           ],
         ),
       ],
     );
   }
 }
+
 // Tally represents the widget configuration
 // _TallyState stores the changing count so the State can survive rebuilds
 
