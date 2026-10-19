@@ -57,9 +57,32 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Study Tracker: $course')),
-      body: const Center(child: Text('Hello')),
+      //3.1
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StudentCard(name: studentName, roll: rollNo, course: course),
+
+            const SizedBox(height: 12),
+
+            // 3.2
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Start: $startCount', key: const Key('info-start')),
+                Text('Step: $stepSize', key: const Key('info-step')),
+                Text('Max: $maxCount', key: const Key('info-max')),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
+  // 3.2
+  //8 levels deep including LabApp
 }
 // runApp receives the root widget of the whole app
 // MaterialApp home receives the first screen that should be displayed
