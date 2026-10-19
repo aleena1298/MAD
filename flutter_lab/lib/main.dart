@@ -45,10 +45,7 @@ class LabApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Step 1 replaces everything below.
-    return MaterialApp(
-     title: 'Study Tracker',
-     home: HomePage(),
-    );
+    return MaterialApp(title: 'Study Tracker', home: HomePage());
   }
 }
 
@@ -59,17 +56,48 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Study Tracker: $course'),
-      ),
-      body: const Center(
-        child: Text('Hello'),
-      ),
+      appBar: AppBar(title: Text('Study Tracker: $course')),
+      body: const Center(child: Text('Hello')),
     );
   }
 }
 // runApp receives the root widget of the whole app
 // MaterialApp home receives the first screen that should be displayed
+
+// 2.1
+class StudentCard extends StatelessWidget {
+  final String name;
+  final String roll;
+  final String course;
+
+  const StudentCard({
+    super.key,
+    required this.name,
+    required this.roll,
+    required this.course,
+  });
+
+  // 2.2
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Name: $name', key: const Key('student-name')),
+            Text('Roll no: $roll', key: const Key('student-roll')),
+            Text('Course: $course', key: const Key('student-course')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+// 2.3
+// StatelessWidget fields are final because the widget itself should not change
+// without final Dart reports that a StatelessWidget has a non-final instance field
 
 // ---- Provided for Step 7. It has a bug on purpose. Do not rename anything.
 class BuggyCounter extends StatefulWidget {
