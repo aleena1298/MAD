@@ -1,5 +1,5 @@
 // main.dart - Study Tracker lab
-//import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 
@@ -76,13 +76,14 @@ class HomePage extends StatelessWidget {
                 Text('Max: $maxCount', key: const Key('info-max')),
               ],
             ),
-            
+
+            const SizedBox(height: 12),
             const Tally(),
             // 4.3
             const SizedBox(height: 12),
 
             //GoalBanner(count: startCount, max: maxCount),
-
+            const Countdown(),
             // 5.3
             const SizedBox(height: 12),
             const BuggyCounter(),
@@ -270,3 +271,46 @@ class _BuggyCounterState extends State<BuggyCounter> {
 // Before fix after three taps _clicks was 9
 // but the screen still showed 0 because build() was not called again
 
+// step 8
+class Countdown extends StatefulWidget {
+  const Countdown({super.key});
+
+  @override
+  State<Countdown> createState() => _CountdownState();
+}
+
+class _CountdownState extends State<Countdown> {
+  late int _left;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _left = startSeconds;
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() => _left--);
+
+      if (_left <= 0) {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_left > 0) {
+      return Text('Time left: $_left s', key: const Key('time-left'));
+    }
+
+    return const Text('Time is up!', key: Key('time-left'));
+  }
+}
+// Without cancelling the Timer it may continue after the widget is removed
