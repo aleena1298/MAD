@@ -133,7 +133,7 @@ class StudentCard extends StatelessWidget {
 // StatelessWidget fields are final because the widget itself should not change
 // without final Dart reports that a StatelessWidget has a non-final instance field
 
-// 4
+// step 4
 class GoalBanner extends StatelessWidget {
   // 4.1
   final int count;
@@ -283,9 +283,13 @@ class _CountdownState extends State<Countdown> {
   late int _left;
   late Timer _timer;
 
+  int _builds = 0;
+
   @override
   void initState() {
     super.initState();
+
+    lifecycleLog.add('initState');
 
     _left = startSeconds;
 
@@ -301,16 +305,29 @@ class _CountdownState extends State<Countdown> {
   @override
   void dispose() {
     _timer.cancel();
+
+    lifecycleLog.add('dispose');
+
     super.dispose();
   }
 
+  // Builds increases once per second because each timer tick calls setState once
+  // lifecycleLog can be printed inside dispose() to prove that dispose ran
   @override
   Widget build(BuildContext context) {
-    if (_left > 0) {
-      return Text('Time left: $_left s', key: const Key('time-left'));
-    }
+    _builds++;
 
-    return const Text('Time is up!', key: Key('time-left'));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_left > 0)
+          Text('Time left: $_left s', key: const Key('time-left'))
+        else
+          const Text('Time is up!', key: Key('time-left')),
+
+        Text('Builds: $_builds', key: const Key('builds')),
+      ],
+    );
   }
 }
-// Without cancelling the Timer it may continue after the widget is removed
+// Without cancelling the Timer it may continue after the widget is removed and cause setState() called after dispose()
