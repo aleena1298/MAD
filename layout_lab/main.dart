@@ -3,8 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-const String studentName = '04072313016';
-const String rollNo = 'Aleena Tariq'; // e.g. '21F-0347'
+const String studentName = 'Aleena Tariq';
+const String rollNo = '04072313016'; // e.g. '21F-0347'
 
 // ===== Seeded settings (generated from YOUR roll number). Do not edit. =====
 final int seed = int.parse(rollNo.substring(rollNo.length - 2));
@@ -108,6 +108,7 @@ class HomePage extends StatelessWidget {
           children: [
             const SettingsCard(),
             const SizedBox(height: 12),
+             const Clock(),
             // Add each new widget BELOW the previous one, in the order the
             // steps tell you, with a SizedBox(height: 12) between widgets.
           ],
@@ -162,3 +163,43 @@ class SummaryRow extends StatelessWidget {
     );
   }
 }
+
+// Part 1
+class Clock extends StatefulWidget {
+  const Clock({super.key});
+
+  @override
+  State<Clock> createState() => _ClockState();
+}
+
+class _ClockState extends State<Clock> {
+  late Timer _timer;
+  int _seconds = startSec;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() => _seconds += tick);
+
+      if (_seconds >= stopAt) {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Session: $_seconds s',
+      key: const Key('clock'),
+    );
+  }
+}
+
+// We start the Timer in initState because initState runs only once
+// when the State is initialized. The build method can run many times.
+// If we start the Timer inside build every rebuild may create
+// another Timer, causing multiple timers to run and the clock
+// to increase faster than expected.
