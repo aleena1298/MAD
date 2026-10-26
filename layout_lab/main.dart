@@ -108,17 +108,15 @@ class HomePage extends StatelessWidget {
           children: [
             const SettingsCard(),
             const SizedBox(height: 12),
-
             const Welcome(),
             const SizedBox(height: 12),
-
             const Clock(),
             const SizedBox(height: 12),
-
             const SwapBoard(),
             const SizedBox(height: 12),
-
             const InfoPanel(),
+            const SizedBox(height: 12),
+            const SummaryRow(),
           ],
         ),
       ),
@@ -155,23 +153,30 @@ class SummaryRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          'Part A: read the widget tree of the $course board from top to bottom.',
-          key: const Key('sum-a'),
+        Expanded(
+          child: Text(
+            'Part A: read the widget tree of the $course board from top to bottom.',
+            key: const Key('sum-a'),
+          ),
         ),
-        Text(
-          'Part B: build each box from small widgets and never extend a built-in class.',
-          key: const Key('sum-b'),
+
+        Expanded(
+          child: Text(
+            'Part B: build each box from small widgets and never extend a built-in class.',
+            key: const Key('sum-b'),
+          ),
         ),
-        Text(
-          'Part C: break the layout on purpose, then fix it with Expanded or Wrap.',
-          key: const Key('sum-c'),
+
+        Expanded(
+          child: Text(
+            'Part C: break the layout on purpose, then fix it with Expanded or Wrap.',
+            key: const Key('sum-c'),
+          ),
         ),
       ],
     );
   }
 }
-
 // Part 1
 class Clock extends StatefulWidget {
   const Clock({super.key});
@@ -318,13 +323,13 @@ class SwapBoard extends StatefulWidget {
 }
 
 class _SwapBoardState extends State<SwapBoard> {
-    var tiles = [
-      Tile(tileA, key: ValueKey(tileA)),
-      Tile(tileB, key: ValueKey(tileB)),
-      Tile(tileC, key: ValueKey(tileC)),
-    ];
+  var tiles = [
+    Tile(tileA, key: ValueKey(tileA)),
+    Tile(tileB, key: ValueKey(tileB)),
+    Tile(tileC, key: ValueKey(tileC)),
+  ];
 
-//   var tiles = [Tile(tileA), Tile(tileB), Tile(tileC)];
+  //   var tiles = [Tile(tileA), Tile(tileB), Tile(tileC)];
   void swap() {
     setState(() {
       tiles = tiles.reversed.toList();
@@ -359,18 +364,9 @@ class InfoPanel extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              'Ali',
-              key: const Key('axis-a'),
-            ),
-            Text(
-              'Omar',
-              key: const Key('axis-b'),
-            ),
-            Text(
-              'Zain',
-              key: const Key('axis-c'),
-            ),
+            Text('Ali', key: const Key('axis-a')),
+            Text('Omar', key: const Key('axis-b')),
+            Text('Zain', key: const Key('axis-c')),
           ],
         ),
       ],
@@ -387,3 +383,4 @@ class InfoPanel extends StatelessWidget {
 // mainAxisAlignment controls the position of children along
 // the main axis, while crossAxisAlignment controls alignment
 // along the cross axis.
+
