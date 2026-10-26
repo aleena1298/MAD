@@ -115,7 +115,7 @@ class HomePage extends StatelessWidget {
             const Clock(),
             const SizedBox(height: 12),
 
-            Row(children: [Tile(tileA), Tile(tileB), Tile(tileC)]),
+            const SwapBoard(),
           ],
         ),
       ),
@@ -301,10 +301,46 @@ class _TileState extends State<Tile> {
   }
 }
 // This is called Composition
-// Composition means building complex widgets by combining smaller, existing widgets instead of inheriting from 
+// Composition means building complex widgets by combining smaller, existing widgets instead of inheriting from
 // We create a new widget by combining existing widgets
 // instead of extending built-in widgets like ElevatedButton.
 // Flutter prefers composition because it makes widgets
 // reusable, flexible, and easier to maintain.
 
+class SwapBoard extends StatefulWidget {
+  const SwapBoard({super.key});
 
+  @override
+  State<SwapBoard> createState() => _SwapBoardState();
+}
+
+class _SwapBoardState extends State<SwapBoard> {
+    var tiles = [
+      Tile(tileA, key: ValueKey(tileA)),
+      Tile(tileB, key: ValueKey(tileB)),
+      Tile(tileC, key: ValueKey(tileC)),
+    ];
+
+//   var tiles = [Tile(tileA), Tile(tileB), Tile(tileC)];
+  void swap() {
+    setState(() {
+      tiles = tiles.reversed.toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(children: tiles),
+        ElevatedButton(
+          key: const Key('swap'),
+          onPressed: swap,
+          child: const Text('Swap'),
+        ),
+      ],
+    );
+  }
+}
+
+// Without keys, Flutter matches Widgets by their type and position.The Element at the left position keeps its existing State. When the Widget label changes from Ali to Zain, the State still contains the previous tap count.Therefore the number stays on the left even though the label changes.
