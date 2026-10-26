@@ -100,9 +100,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Team Board: $course'),
-      ),
+      appBar: AppBar(title: Text('Team Board: $course')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -127,12 +125,17 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
 
             const ShareRow(),
+            const SizedBox(height: 12),
+            const SizedBox(height: 12),
+
+            const InfoBox(),
           ],
         ),
       ),
     );
   }
 }
+
 // ---- Provided: shows YOUR numbers. Keep it on the page. Do not rename.
 class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key});
@@ -186,6 +189,7 @@ class SummaryRow extends StatelessWidget {
     );
   }
 }
+
 // Part 1
 class Clock extends StatefulWidget {
   const Clock({super.key});
@@ -400,25 +404,16 @@ class ShareRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(
-          width: fixedW,
-          child: const Text('Fixed'),
-        ),
+        SizedBox(width: fixedW, child: const Text('Fixed')),
 
         Expanded(
           flex: flexA,
-          child: Container(
-            color: Colors.blue,
-            child: const Text('A'),
-          ),
+          child: Container(color: Colors.blue, child: const Text('A')),
         ),
 
         Flexible(
           flex: flexB,
-          child: Container(
-            color: Colors.green,
-            child: const Text('B'),
-          ),
+          child: Container(color: Colors.green, child: const Text('B')),
         ),
       ],
     );
@@ -435,3 +430,28 @@ class ShareRow extends StatelessWidget {
 // flexB = 1
 // A receives 2 / (2 + 1) * 100 = 66.67%
 // of the remaining available width.
+
+class InfoBox extends StatelessWidget {
+  const InfoBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(boxMargin),
+      padding: EdgeInsets.all(boxPad),
+      decoration: BoxDecoration(
+        color: swatches[hue]!.shade100,
+        borderRadius: BorderRadius.circular(boxRadius),
+        border: Border.all(color: swatches[hue]!, width: boxBorder),
+      ),
+      child: const Text('Info Box', key: Key('info-box')),
+    );
+  }
+}
+
+// Padding is inside the border, while margin is outside the border.
+// We use Padding when we only need to add space around a widget.
+// We use SizedBox when we need a fixed width, height, or empty space
+// between widgets.
+// We use Container when we need multiple properties together,
+// such as padding, margin, background colour, and border.
