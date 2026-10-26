@@ -126,9 +126,11 @@ class HomePage extends StatelessWidget {
 
             const ShareRow(),
             const SizedBox(height: 12),
-            const SizedBox(height: 12),
 
             const InfoBox(),
+            const SizedBox(height: 12),
+
+            const StampStack(),
           ],
         ),
       ),
@@ -190,7 +192,6 @@ class SummaryRow extends StatelessWidget {
   }
 }
 
-// Part 1
 class Clock extends StatefulWidget {
   const Clock({super.key});
 
@@ -455,3 +456,51 @@ class InfoBox extends StatelessWidget {
 // between widgets.
 // We use Container when we need multiple properties together,
 // such as padding, margin, background colour, and border.
+
+class StampStack extends StatelessWidget {
+  const StampStack({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      height: 120,
+      child: Stack(
+        children: [
+          Container(width: 300, height: 120, color: Colors.grey.shade200),
+
+          Positioned(
+            top: dotTop,
+            left: dotLeft,
+            child: const Icon(Icons.star, color: Colors.orange),
+          ),
+
+          Positioned(
+            top: dotTop,
+            right: dotRight,
+            child: const Icon(Icons.circle, color: Colors.blue),
+          ),
+
+          Positioned(
+            bottom: dotBottom,
+            left: dotLeft,
+            child: const Icon(Icons.favorite, color: Colors.red),
+          ),
+
+          Positioned(
+            bottom: dotBottom,
+            right: dotRight,
+            child: const Icon(Icons.check_circle, color: Colors.green),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// The size of the Stack is decided by its parent SizedBox,
+// which has a width of 300 and a height of 120.
+//
+// If the Icons come first and the grey Container comes last,
+// the Container will be drawn on top of the Icons and may
+// hide them because Stack paints its children in order.
+// Therefore, the background Container should come first.
