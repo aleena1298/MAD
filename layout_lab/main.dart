@@ -116,6 +116,9 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 12),
 
             const SwapBoard(),
+            const SizedBox(height: 12),
+
+            const InfoPanel(),
           ],
         ),
       ),
@@ -344,3 +347,43 @@ class _SwapBoardState extends State<SwapBoard> {
 }
 
 // Without keys, Flutter matches Widgets by their type and position.The Element at the left position keeps its existing State. When the Widget label changes from Ali to Zain, the State still contains the previous tap count.Therefore the number stays on the left even though the label changes.
+
+class InfoPanel extends StatelessWidget {
+  const InfoPanel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Ali',
+              key: const Key('axis-a'),
+            ),
+            Text(
+              'Omar',
+              key: const Key('axis-b'),
+            ),
+            Text(
+              'Zain',
+              key: const Key('axis-c'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+// In a row the main axis is horizontal and the cross axis is vertical
+// In a column the main axis is vertical and the cross axis is horizontal
+// For my roll number the required alignments are
+// Row MainAxisAlignment.start
+// Column CrossAxisAlignment.center
+//
+// mainAxisAlignment controls the position of children along
+// the main axis, while crossAxisAlignment controls alignment
+// along the cross axis.
