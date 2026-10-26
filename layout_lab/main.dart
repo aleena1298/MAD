@@ -175,10 +175,19 @@ class Clock extends StatefulWidget {
 class _ClockState extends State<Clock> {
   late Timer _timer;
   int _seconds = startSec;
+  int _builds = 0;
+// Builds increases by one per second because the timer calls
+// setState once every second, causing the widget to rebuild.
+//
+// If we do not cancel the timer in dispose, it may continue
+// running after the widget is removed and cause the error:
+// setState() called after dispose().
 
   @override
   void initState() {
     super.initState();
+
+    lifecycleLog.add('initState');
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _seconds += tick);
@@ -190,10 +199,28 @@ class _ClockState extends State<Clock> {
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    lifecycleLog.add('dispose');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Text(
-      'Session: $_seconds s',
-      key: const Key('clock'),
+    _builds++;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Session: $_seconds s',
+          key: const Key('clock'),
+        ),
+        Text(
+          'Builds: $_builds',
+          key: const Key('builds'),
+        ),
+      ],
     );
   }
 }
