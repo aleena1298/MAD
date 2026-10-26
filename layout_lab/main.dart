@@ -108,9 +108,14 @@ class HomePage extends StatelessWidget {
           children: [
             const SettingsCard(),
             const SizedBox(height: 12),
-             const Clock(),
-            // Add each new widget BELOW the previous one, in the order the
-            // steps tell you, with a SizedBox(height: 12) between widgets.
+
+            const Welcome(),
+            const SizedBox(height: 12),
+
+            const Clock(),
+            const SizedBox(height: 12),
+
+            Row(children: [Tile(tileA), Tile(tileB), Tile(tileC)]),
           ],
         ),
       ),
@@ -176,12 +181,12 @@ class _ClockState extends State<Clock> {
   late Timer _timer;
   int _seconds = startSec;
   int _builds = 0;
-// Builds increases by one per second because the timer calls
-// setState once every second, causing the widget to rebuild.
-//
-// If we do not cancel the timer in dispose, it may continue
-// running after the widget is removed and cause the error:
-// setState() called after dispose().
+  // Builds increases by one per second because the timer calls
+  // setState once every second, causing the widget to rebuild.
+  //
+  // If we do not cancel the timer in dispose, it may continue
+  // running after the widget is removed and cause the error:
+  // setState() called after dispose().
 
   @override
   void initState() {
@@ -212,14 +217,8 @@ class _ClockState extends State<Clock> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Session: $_seconds s',
-          key: const Key('clock'),
-        ),
-        Text(
-          'Builds: $_builds',
-          key: const Key('builds'),
-        ),
+        Text('Session: $_seconds s', key: const Key('clock')),
+        Text('Builds: $_builds', key: const Key('builds')),
         Probe(seconds: _seconds),
       ],
     );
@@ -232,21 +231,18 @@ class _ClockState extends State<Clock> {
 // another Timer, causing multiple timers to run and the clock
 // to increase faster than expected.
 
-class Probe extends StatelessWidget{
+class Probe extends StatelessWidget {
   final int seconds;
-  
 
   const Probe({super.key, required this.seconds});
-  
-  Widget build(BuildContext context){
-    final bool above = context.findAncestorWidgetOfExactType<Scaffold>() != null;
+
+  Widget build(BuildContext context) {
+    final bool above =
+        context.findAncestorWidgetOfExactType<Scaffold>() != null;
     return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-        Text(
-          'Seen at: $seconds s',
-          key: const Key('probe-seen'),
-        ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Seen at: $seconds s', key: const Key('probe-seen')),
         Text(
           'Widget #${identityHashCode(this)}',
           key: const Key('probe-widget'),
@@ -259,10 +255,7 @@ class Probe extends StatelessWidget{
           'Context belongs to: ${context.widget.runtimeType}',
           key: const Key('probe-context'),
         ),
-        Text(
-          'Scaffold above me: $above',
-          key: const Key('probe-above'),
-        ),
+        Text('Scaffold above me: $above', key: const Key('probe-above')),
       ],
     );
   }
@@ -272,4 +265,46 @@ class Probe extends StatelessWidget{
 // The RenderObject belongs to Flutter's rendering system(backend)
 // Its job is to handle layout and painting
 
-Its job is to handle layout and painting.
+class Welcome extends StatelessWidget {
+  const Welcome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Welcome, $studentName', key: const Key('welcome')),
+    );
+  }
+}
+
+class Tile extends StatefulWidget {
+  final String label;
+
+  const Tile(this.label, {super.key});
+
+  @override
+  State<Tile> createState() => _TileState();
+}
+
+class _TileState extends State<Tile> {
+  int taps = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          taps++;
+        });
+      },
+      child: Text('${widget.label}: $taps'),
+    );
+  }
+}
+// This is called Composition
+// Composition means building complex widgets by combining smaller, existing widgets instead of inheriting from 
+// We create a new widget by combining existing widgets
+// instead of extending built-in widgets like ElevatedButton.
+// Flutter prefers composition because it makes widgets
+// reusable, flexible, and easier to maintain.
+
+
