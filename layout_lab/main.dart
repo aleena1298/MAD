@@ -100,7 +100,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Team Board: $course')),
+      appBar: AppBar(
+        title: Text('Team Board: $course'),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -108,22 +110,29 @@ class HomePage extends StatelessWidget {
           children: [
             const SettingsCard(),
             const SizedBox(height: 12),
+
             const Welcome(),
             const SizedBox(height: 12),
+
             const Clock(),
             const SizedBox(height: 12),
+
             const SwapBoard(),
             const SizedBox(height: 12),
+
             const InfoPanel(),
             const SizedBox(height: 12),
+
             const SummaryRow(),
+            const SizedBox(height: 12),
+
+            const ShareRow(),
           ],
         ),
       ),
     );
   }
 }
-
 // ---- Provided: shows YOUR numbers. Keep it on the page. Do not rename.
 class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key});
@@ -384,3 +393,45 @@ class InfoPanel extends StatelessWidget {
 // the main axis, while crossAxisAlignment controls alignment
 // along the cross axis.
 
+class ShareRow extends StatelessWidget {
+  const ShareRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: fixedW,
+          child: const Text('Fixed'),
+        ),
+
+        Expanded(
+          flex: flexA,
+          child: Container(
+            color: Colors.blue,
+            child: const Text('A'),
+          ),
+        ),
+
+        Flexible(
+          flex: flexB,
+          child: Container(
+            color: Colors.green,
+            child: const Text('B'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Expanded forces its child to fill the allocated space,
+// while Flexible allows its child to use less space.
+//
+// The fixed-width widget takes 130 pixels first.
+// The remaining space is divided according to flexA and flexB.
+// For my roll number:
+// flexA = 2
+// flexB = 1
+// A receives 2 / (2 + 1) * 100 = 66.67%
+// of the remaining available width.
